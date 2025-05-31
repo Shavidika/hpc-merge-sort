@@ -1,4 +1,4 @@
-# Parallel Merge Sort: Serial, OpenMP, MPI, and Hybrid Approaches
+# Merge Sort: Serial, OpenMP, MPI, and Hybrid Approaches
 
 This project implements and compares the performance of Merge Sort using four different methods:
 - Serial (Single-threaded)
