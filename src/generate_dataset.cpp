@@ -4,7 +4,7 @@
 
 int main() {
     const std::string filename = "datasets/input_large.txt";
-    const size_t num_elements = 10000000; // 10 million
+    const size_t num_elements = 10000000;
     const int min_value = 0;
     const int max_value = 1000000;
 
