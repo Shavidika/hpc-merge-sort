@@ -36,3 +36,5 @@ output_serial.txt
 /datasets
 
 .vscode
+
+merge_sort_parallel_MPI
