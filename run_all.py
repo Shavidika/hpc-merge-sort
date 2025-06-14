@@ -9,22 +9,27 @@ def is_windows():
 def exe_prefix():
     return '' if is_windows() else './'
 
+def print_section(title):
+    print("\n" + "=" * 60)
+    print(f"{title}")
+    print("=" * 60)
+
 def compile_generate_dataset():
-    print("Compiling generate_dataset.cpp...")
+    print_section("[1] Compiling Dataset Generator")
     result = subprocess.run(["g++", "src/generate_dataset.cpp", "-o", "generate_dataset.exe"], shell=True)
     if result.returncode != 0:
         print("Failed to compile generate_dataset.cpp.")
         sys.exit(1)
 
 def compile_merge_sort_serial():
-    print("Compiling merge_sort_serial.cpp...")
+    print_section("[2] Compiling Serial Merge Sort")
     result = subprocess.run(["g++", "src/merge_sort_serial.cpp", "-o", "merge_sort_serial.exe"], shell=True)
     if result.returncode != 0:
         print("Failed to compile merge_sort_serial.cpp.")
         sys.exit(1)
 
 def run_generate_dataset():
-    print("Running dataset generator...")
+    print_section("[1] Dataset Generation")
     exe = exe_prefix() + "generate_dataset.exe"
     result = subprocess.run([exe], shell=True)
     if result.returncode != 0:
@@ -32,7 +37,7 @@ def run_generate_dataset():
         sys.exit(1)
 
 def run_merge_sort_serial():
-    print("Running serial merge sort...")
+    print_section("[2] Serial Merge Sort")
     exe = exe_prefix() + "merge_sort_serial.exe"
     result = subprocess.run([exe], shell=True)
     if result.returncode != 0:
@@ -40,7 +45,8 @@ def run_merge_sort_serial():
         sys.exit(1)
 
 def compile_and_run_mpi_in_wsl():
-    print("Switching to Ubuntu (WSL), compiling, and running MPI parallel merge sort...")
+    print_section("[3] Parallel Merge Sort with MPI (WSL)")
+    print("Switching to Ubuntu (WSL) and running MPI parallel merge sort...")
     wsl_command = (
         'ubuntu run "cd /mnt/c/Users/Shavidika/Desktop/HPC/Project/hpc-merge-sort && '
         'mpic++ -o merge_sort_parallel_MPI src/merge_sort_parallel_MPI.cpp && '
@@ -52,13 +58,19 @@ def compile_and_run_mpi_in_wsl():
         sys.exit(1)
 
 def main():
+    print("AUTOMATED MERGE SORT BENCHMARK\n" + "-" * 60)
     regenerate = input("Do you want to regenerate the dataset? (yes/no): ").strip().lower()
     compile_generate_dataset()
     if regenerate == "yes":
         run_generate_dataset()
+    else:
+        print("[1] Skipping dataset generation (using existing files).\n")
     compile_merge_sort_serial()
     run_merge_sort_serial()
     compile_and_run_mpi_in_wsl()
+    print("\n" + "=" * 60)
+    print("All steps completed. See above for timing and accuracy results.")
+    print("=" * 60)
 
 if __name__ == "__main__":
     main()
