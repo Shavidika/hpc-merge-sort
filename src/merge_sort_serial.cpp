@@ -4,45 +4,10 @@
 #include <chrono>
 #include <string>
 #include "file_compare_utils.h"
+#include "merge_utils.h"
 
 using namespace std;
 using namespace std::chrono;
-
-void merge(vector<int> &arr, int left, int mid, int right)
-{
-    vector<int> leftArr(arr.begin() + left, arr.begin() + mid + 1);
-    vector<int> rightArr(arr.begin() + mid + 1, arr.begin() + right + 1);
-
-    int i = 0, j = 0, k = left;
-
-    while (i < (int)leftArr.size() && j < (int)rightArr.size())
-    {
-        if (leftArr[i] <= rightArr[j])
-        {
-            arr[k++] = leftArr[i++];
-        }
-        else
-        {
-            arr[k++] = rightArr[j++];
-        }
-    }
-
-    while (i < (int)leftArr.size())
-        arr[k++] = leftArr[i++];
-    while (j < (int)rightArr.size())
-        arr[k++] = rightArr[j++];
-}
-
-void mergeSort(vector<int> &arr, int left, int right)
-{
-    if (left >= right)
-        return;
-    int mid = left + (right - left) / 2;
-
-    mergeSort(arr, left, mid);
-    mergeSort(arr, mid + 1, right);
-    merge(arr, left, mid, right);
-}
 
 vector<int> readInputFile(const string &filename)
 {

@@ -9,10 +9,10 @@
 using namespace std;
 using namespace std::chrono;
 
-void merge(vector<int> &arr, int left, int mid, int right)
+void merge(std::vector<int> &arr, int left, int mid, int right)
 {
-    vector<int> leftArr(arr.begin() + left, arr.begin() + mid + 1);
-    vector<int> rightArr(arr.begin() + mid + 1, arr.begin() + right + 1);
+    std::vector<int> leftArr(arr.begin() + left, arr.begin() + mid + 1);
+    std::vector<int> rightArr(arr.begin() + mid + 1, arr.begin() + right + 1);
     int i = 0, j = 0, k = left;
     while (i < (int)leftArr.size() && j < (int)rightArr.size())
     {
