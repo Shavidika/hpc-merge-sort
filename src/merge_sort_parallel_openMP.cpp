@@ -4,6 +4,7 @@
 #include <chrono>
 #include <string>
 #include <omp.h>
+#include "file_compare_utils.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -66,61 +67,6 @@ void writeOutputFile(const string &filename, const vector<int> &data)
     for (int num : data)
         outfile << num << "\n";
     outfile.close();
-}
-
-bool compareFiles(const std::string &file1, const std::string &file2)
-{
-    std::ifstream f1(file1), f2(file2);
-    std::string line1, line2;
-    bool f1_has_line, f2_has_line;
-    while (true)
-    {
-        f1_has_line = static_cast<bool>(std::getline(f1, line1));
-        f2_has_line = static_cast<bool>(std::getline(f2, line2));
-        if (!f1_has_line && !f2_has_line)
-            break;
-        if (f1_has_line != f2_has_line)
-            return false;
-        if (line1 != line2)
-            return false;
-    }
-    return true;
-}
-
-void printFileDifferences(const std::string &file1, const std::string &file2, int max_diffs = 10)
-{
-    std::ifstream f1(file1), f2(file2);
-    std::string line1, line2;
-    int line_num = 1, diff_count = 0;
-    bool f1_has_line, f2_has_line;
-    while ((f1_has_line = static_cast<bool>(std::getline(f1, line1))) | (f2_has_line = static_cast<bool>(std::getline(f2, line2))))
-    {
-        if (!f1_has_line)
-        {
-            std::cout << "Extra line in " << file2 << " at line " << line_num << ": " << line2 << "\n";
-            diff_count++;
-        }
-        else if (!f2_has_line)
-        {
-            std::cout << "Extra line in " << file1 << " at line " << line_num << ": " << line1 << "\n";
-            diff_count++;
-        }
-        else if (line1 != line2)
-        {
-            std::cout << "Difference at line " << line_num << ":\n";
-            std::cout << "  " << file1 << ": " << line1 << "\n";
-            std::cout << "  " << file2 << ": " << line2 << "\n";
-            diff_count++;
-        }
-        if (diff_count >= max_diffs)
-        {
-            std::cout << "More differences exist...\n";
-            break;
-        }
-        line_num++;
-    }
-    if (diff_count == 0)
-        std::cout << "No differences found.\n";
 }
 
 int main()
