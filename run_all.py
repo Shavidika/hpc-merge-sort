@@ -28,6 +28,13 @@ def compile_merge_sort_serial():
         print("Failed to compile merge_sort_serial.cpp.")
         sys.exit(1)
 
+def compile_merge_sort_openmp():
+    print_section("[3] Compiling Parallel Merge Sort (OpenMP)")
+    result = subprocess.run(["g++", "-fopenmp", "src/merge_sort_parallel_openMP.cpp", "-o", "merge_sort_parallel_openMP.exe"], shell=True)
+    if result.returncode != 0:
+        print("Failed to compile merge_sort_parallel_openMP.cpp.")
+        sys.exit(1)
+
 def run_generate_dataset():
     print_section("[1] Dataset Generation")
     exe = exe_prefix() + "generate_dataset.exe"
@@ -42,6 +49,14 @@ def run_merge_sort_serial():
     result = subprocess.run([exe], shell=True)
     if result.returncode != 0:
         print("Serial merge sort failed.")
+        sys.exit(1)
+
+def run_merge_sort_openmp():
+    print_section("[4] Parallel Merge Sort (OpenMP)")
+    exe = exe_prefix() + "merge_sort_parallel_openMP.exe"
+    result = subprocess.run([exe], shell=True)
+    if result.returncode != 0:
+        print("OpenMP parallel merge sort failed.")
         sys.exit(1)
 
 def compile_and_run_mpi_in_wsl():
@@ -67,6 +82,8 @@ def main():
         print("[1] Skipping dataset generation (using existing files).\n")
     compile_merge_sort_serial()
     run_merge_sort_serial()
+    compile_merge_sort_openmp()
+    run_merge_sort_openmp()
     compile_and_run_mpi_in_wsl()
     print("\n" + "=" * 60)
     print("All steps completed. See above for timing and accuracy results.")
